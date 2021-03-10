@@ -183,7 +183,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
 
   condition = true;
 
-  AUTH_SERVER: string = "http://34.121.159.9/customers/ingresar";
+  AUTH_SERVER: string = "http://34.70.3.128/customers/ingresar";
   authSubject = new BehaviorSubject(false);
   private token: string;
 

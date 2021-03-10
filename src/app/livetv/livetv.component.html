@@ -1,26 +1,396 @@
 <div class="main-content">
   <div class="container-fluid">
+    
+    <!-- Channels -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary card-header-icon">
+          <div class="card-header card-header-info card-header-icon">
             <div class="card-icon">
-              <i class="material-icons">assignment</i>
+              <i class="material-icons">library_books</i>
             </div>
-            <h4 class="card-title">Channels</h4>
+            <h4 class="card-title">Canales</h4>
           </div>
           <div class="card-body">
-            <div class="toolbar"></div>
+            <div class="toolbar">
+              <!--        Here you can write extra buttons/actions for the toolbar              -->
+              <button class="btn btn-info" data-toggle="modal" data-target="#modal-create-channel">
+                <i class="material-icons">library_add</i> Agregar
+              </button>
+            </div>
             <div class="material-datatables">
-              <table
-                datatable
-                [dtOptions]="dtOptions"
-                class="row-border hover"
-              ></table>
+              <table id="datatable-channels" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                <thead class="text-center">
+                  <tr>
+                    <th>Número</th>
+                    <th>Nombre</th>
+                    <!--<th>EPG ID</th>-->
+                    <th>Icono</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
+                    <th>Stream URL</th>
+                    <th><i class="material-icons">settings</i></th>
+                    <!--<th class="disabled-sorting text-right">Actions</th>-->
+                  </tr>
+                </thead>
+                <tfoot class="text-center">
+                  <tr>
+                    <th>Número</th>
+                    <th>Nombre</th>
+                    <!--<th>EPG ID</th>-->
+                    <th>Icono</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
+                    <th>Stream URL</th>
+                    <th><i class="material-icons">settings</i></th>
+                    <!--<th class="text-right">Actions</th>-->
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
+          <!-- end content-->
         </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+  </div>
+  <!-- Channels Modal -->
+  <div class="modal fade" id="modal-create-channel" role="dialog" aria-labelledby="modalCreateChannelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form enctype="multipart/form-data" id="form-create-channel">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCreateChannelLabel">AGREGAR UN NUEVO CANAL</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="input-create-channel-nombre">Nombre *</label>
+                <input name="channel[nombre]" type="text" class="form-control" id="input-create-channel-nombre">
+              </div>
+              <div class="form-group">
+                <label for="input-create-channel-numero">Número *</label>
+                <input name="channel[numero]" type="number" class="form-control" id="input-create-channel-numero">
+              </div>
+              <div class="form-group">
+                <label for="input-create-channel-streamUrl">Stream URL *</label>
+                <input name="channel[streamUrl]" type="text" class="form-control" id="input-create-channel-streamUrl">
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-3">
+                    <label for="select-create-channel-category" class="m-0 pt-3">Categoría *</label>
+                  </div>
+                  <div class="col-9">
+                    <select name="channel[category]" class="form-control selectpicker pl-0" data-style="btn btn-link" id="select-create-channel-category">
+                      <option disabled selected>Seleccionar categoría</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="form-group form-file-upload form-file-multiple">
+                <label>Ícono *</label>
+                <input name="icono" type="file" multiple="" class="inputFileHidden">
+                <div class="input-group">
+                    <input type="text" class="form-control inputFileVisible" placeholder="Click para seleccionar el ícono">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-fab btn-round btn-info">
+                            <i class="material-icons">attach_file</i>
+                        </button>
+                    </span>
+                </div>
+                <small id="help-create-channel-icono" class="form-text text-muted">Sólo se permiten archivos .png / .jpg / .ico</small>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-info"><i class="material-icons">library_add</i> Agregar</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
+  <div class="modal fade" id="modal-create-epg" role="dialog" aria-labelledby="modalCreateEPGLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form enctype="multipart/form-data" id="form-create-epg">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCreateEPGLabel">AGREGAR PROGRAMACIÓN</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-3">
+                  <label for="select-create-epg-timezone" class="m-0 pt-3">Timezone *</label>
+                </div>
+                <div class="col-9">
+                  <select name="epg[timezone]" class="form-control selectpicker pl-0" data-style="btn btn-link" id="select-create-epg-timezone">
+                    <option disabled selected>Seleccionar timezone</option>
+                    <option value="America/Lima">America/Lima</option>
+                    <option value="America/Los_Angeles">America/Los_Angeles</option>
+                    <option value="America/Caracas">America/Caracas</option>
+                    <option value="Europe/Brussels">Europe/Brussels</option>
+                    <option value="America/Argentina/Buenos_Aires">America/Argentina/Buenos_Aires</option>
+                    <option value="	America/La_Paz">America/La_Paz</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input-create-epg-titulo">Título *</label>
+              <input name="epg[titulo]" type="text" class="form-control" id="input-create-epg-titulo">
+            </div>
+            <div class="form-group">
+              <label for="input-create-epg-descripcion">Descripción *</label>
+              <textarea name="epg[descripcion]" class="form-control" id="input-create-epg-inicio" rows="2"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="input-create-epg-inicio">Inicio *</label>
+                  <input name="epg[inicio]" type="text" class="form-control datetimepicker" id="input-create-epg-inicio">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="input-create-epg-fin">Fin *</label>
+                  <input name="epg[fin]" type="text" class="form-control datetimepicker" id="input-create-epg-fin">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="input-create-epg-duracion">Duración</label>
+                  <input name="epg[duracion]" type="number" class="form-control" id="input-create-epg-duracion" value="0">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="input-create-epg-calificacion">Calificación (1 al 10)</label>
+                  <input name="epg[calificacion]" type="number" class="form-control" id="input-create-epg-calificacion" value="0">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input-create-epg-genero">Género</label>
+              <input name="epg[genero]" type="text" class="form-control" id="input-create-epg-genero" value="-">
+            </div>
+            <div id="group-create-epg-episodio">
+              <div class="form-group">
+                <label for="input-create-epg-episodioTitulo">Título del Episodio</label>
+                <input name="epg[episodioTitulo]" type="text" class="form-control" id="input-create-epg-episodioTitulo" value="-">
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="input-create-epg-temporada">Tempoarada</label>
+                    <input name="epg[temporada]" type="text" class="form-control" id="input-create-epg-temporada" value="-">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="input-create-epg-episodio">Episodio</label>
+                    <input name="epg[episodio]" type="text" class="form-control" id="input-create-epg-episodio" value="-">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input-create-epg-channel">Canal</label>
+              <input name="epg[channel]" type="text" class="form-control d-none" id="input-create-epg-channel" value="">
+              <input type="text" class="form-control" id="input-create-epg-channel-nombre" value="" disabled>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-warning"><i class="material-icons">add_to_queue</i> Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-primary card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">bookmark</i>
+          </div>
+          <h4 class="card-title">Categorías</h4>
+        </div>
+        <div class="card-body">
+          <div class="toolbar">
+            <!--        Here you can write extra buttons/actions for the toolbar              -->
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-create-category">
+            <i class="material-icons">bookmark_add</i> Agregar
+          </button>
+          </div>
+          <div class="material-datatables">
+            <table id="datatable-categories" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+              <thead class="text-center">
+                <tr>
+                  <th>Orden</th>
+                  <th>Nombre</th>
+                  <th>Disponible</th>
+                  <th>Adultos</th>
+                  <th>Ícono</th>
+                  <!--<th class="disabled-sorting text-right">Actions</th>-->
+                </tr>
+              </thead>
+              <tfoot class="text-center">
+                <tr>
+                  <th>Orden</th>
+                  <th>Nombre</th>
+                  <th>Disponible</th>
+                  <th>Adultos</th>
+                  <th>Ícono</th>
+                  <!--<th class="text-right">Actions</th>-->
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- end content-->
+      </div>
+      <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+  </div>
+  <!-- Categories Modal -->
+  <div class="modal fade" id="modal-create-category" tabindex="-1" role="dialog" aria-labelledby="modalCreateCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form enctype="multipart/form-data" id="form-create-category">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCreateCategoryLabel">AGREGAR UNA NUEVA CATEGORÍA</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="input-create-category-nombre">Nombre *</label>
+                <input name="category[nombre]" type="text" class="form-control" id="input-create-category-nombre">
+              </div>
+              <div class="form-group">
+                <label for="input-create-category-orden">Orden *</label>
+                <input name="category[orden]" type="number" class="form-control" id="input-create-category-orden">
+              </div>
+              <br>
+              <div class="form-check">
+                <label class="form-check-label">
+                    <input name="category[disponible]" class="form-check-input" type="checkbox" value="true" checked>
+                    Disponible
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                    <input name="category[adultos]" class="form-check-input" type="checkbox" value="true">
+                    Adultos
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+              </div>
+              <br>
+              <div class="form-group form-file-upload form-file-multiple">
+                <label>Ícono *</label>
+                <input name="icono" type="file" multiple="" class="inputFileHidden">
+                <div class="input-group">
+                    <input type="text" class="form-control inputFileVisible" placeholder="Click para seleccionar el ícono">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-fab btn-round btn-primary">
+                            <i class="material-icons">attach_file</i>
+                        </button>
+                    </span>
+                </div>
+                <small id="help-create-category-icono" class="form-text text-muted">Sólo se permiten archivos .png / .jpg / .ico</small>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary"><i class="material-icons">bookmark_add</i> Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- EPG -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">tv</i>
+          </div>
+          <h4 class="card-title">EPG</h4>
+        </div>
+        <div class="card-body">
+          <div class="toolbar">
+            <!--        Here you can write extra buttons/actions for the toolbar              -->
+            
+          </div>
+          <div class="material-datatables">
+            <table id="datatable-epg" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+              <thead class="text-center">
+                <tr>
+                  <th>Canal</th>
+                  <th>TZ</th>
+                  <th>Título</th>
+                  <th>Inicio</th>
+                  <th>Fin</th>
+                  <th>Duración</th>
+                  <th>Calificación</th>
+                  <th>Género</th>
+                  <!-- <th>Episodio Título</th> -->
+                  <!-- <th>Temporada</th>
+                  <th># Episodio</th>
+                  <th>Descripción</th> -->
+                  <!--<th class="disabled-sorting text-right">Actions</th>-->
+                </tr>
+              </thead>
+              <tfoot class="text-center">
+                <tr>
+                  <!-- <th>Canal</th>
+                  <th>TZ</th>
+                  <th>Título</th>
+                  <th>Inicio</th>
+                  <th>Fin</th>
+                  <th>Duración</th>
+                  <th>Calificación</th>
+                  <th>Género</th>
+                  <th>Episodio Título</th>
+                  <th>Temporada</th>
+                  <th># Episodio</th>
+                  <th>Descripción</th> -->
+                  <!--<th class="text-right">Actions</th>-->
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- end content-->
+      </div>
+      <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+  </div>
+
+
   </div>
 </div>
